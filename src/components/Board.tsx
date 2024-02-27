@@ -1,17 +1,42 @@
+'use client';
+import { useState } from "react";
 import Column from "./Column";
 import NewColumnForm from "./forms/NewColumnForm";
 
-const columns = [
-  {id: "woqei", name: "todo", index: 0},
-  {id: "woqeo", name: "in progress", index: 1},
-  {id: "woqep", name: "done", index: 2},
+export type CardType = {
+  id: string;
+  title: string;
+  order: number;
+  columnId: string;
+}
+
+const defaultColumns = [
+  {id: "col1", name: "todo", index: 0},
+  {id: "col2", name: "in progress", index: 1},
+  {id: "col3", name: "done", index: 2},
 ];
 
+const defaultCards = [
+  {id: "aokid", title: "task1", order: 0, columnId: "col1"},
+  {id: "aokif", title: "task2", order: 1, columnId: "col2"},
+  {id: "aokig", title: "task3", order: 2, columnId: "col3"},
+  {id: "aokih", title: "task4", order: 2, columnId: "col3"},
+]
+
 export default function Board() {
+  
+  const [columns, setColumns] = useState(defaultColumns);
+  const [cards, setCards] = useState(defaultCards);
+  
   return (
     <div className="flex gap-6">
       {columns.map(column => (
-        <Column key={column.id} {...column} />
+        <Column
+          key={column.id}
+          {...column} 
+          cards={cards.filter(card => card.columnId == column.id)}
+          setCards={setCards}
+        />
       ))}
       <NewColumnForm />
     </div>
